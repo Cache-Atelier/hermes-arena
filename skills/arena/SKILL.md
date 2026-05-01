@@ -10,7 +10,7 @@ metadata:
   hermes:
     tags: [arena, are.na, social-media, curation, archive, channels, blocks]
     category: social-media
-    homepage: https://github.com/onchaindom/hermes-arena
+    homepage: https://github.com/Cache-Atelier/hermes-arena
 ---
 
 # arena — Are.na via v3 API
@@ -46,7 +46,7 @@ Critical rules when operating inside an agent or LLM session:
 ## Installation
 
 ```
-hermes skills install onchaindom/hermes-arena/arena --category social-media
+hermes skills install Cache-Atelier/hermes-arena/arena --category social-media
 ```
 
 Python 3 is the only host requirement. The skill installs `requests` automatically when invoked.

@@ -7,7 +7,7 @@ Built by [Cache Atelier](https://cacheatelier.work) for [Clio Press](https://www
 ## Install
 
 ```
-hermes skills install onchaindom/hermes-arena/arena --category social-media
+hermes skills install Cache-Atelier/hermes-arena/arena --category social-media
 ```
 
 The skill needs Python 3 and `requests` (one dependency). Hermes' install flow handles them.
