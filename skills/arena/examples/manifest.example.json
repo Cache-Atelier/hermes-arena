@@ -1,0 +1,45 @@
+{
+  "_doc": [
+    "Manifest format for `arena block batch --manifest <this-file>`.",
+    "",
+    "Required fields:",
+    "  channel    - Are.na channel slug (string) or integer id.",
+    "  blocks     - array of block specs, each with at minimum a `value`.",
+    "",
+    "Optional top-level fields:",
+    "  throttle_ms - default 700 ms between block creations (≥600 recommended).",
+    "",
+    "Per-block fields (all optional except `value`):",
+    "  value                  - URL (image, link) or plain text (Text block).",
+    "                           Are.na infers block type from `value`.",
+    "  title                  - block display title.",
+    "  description            - markdown supported.",
+    "  alt_text               - for image blocks.",
+    "  original_source_url    - attribution URL when image is mirrored.",
+    "  original_source_title  - friendly name for the source.",
+    "  metadata               - free-form key/value object.",
+    "",
+    "This _doc field is ignored by the CLI; included for human readability."
+  ],
+  "channel": "your-channel-slug",
+  "throttle_ms": 700,
+  "blocks": [
+    {
+      "value": "https://example.com/works/drifella-1075.png",
+      "title": "Drifella III #1075",
+      "description": "From the *Drifella III* collection by Evil Biscuit. PNG-layer composition. Source: tensor.trade",
+      "original_source_url": "https://www.tensor.trade/item/0cba50f5-a0b9-4199-a86c-82bafaec5105",
+      "original_source_title": "Drifella III on Tensor"
+    },
+    {
+      "value": "https://example.com/works/mifella-2.png",
+      "title": "Mifella #2",
+      "description": "Spiky DJ, 2022. The Ethereum→Solana schism point. Source: arweave.net",
+      "original_source_url": "https://www.tensor.trade/item/e4ae4a16-5f7f-446e-b274-10e38bcde311"
+    },
+    {
+      "value": "Text blocks are created when value is plain text (not a URL).\n\n— Practitioner Name, Source Title, 2025",
+      "description": "Direct quotation example."
+    }
+  ]
+}

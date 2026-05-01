@@ -1,0 +1,52 @@
+name: smoke
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install requests
+        run: pip install -r skills/arena/scripts/requirements.txt
+
+      - name: arena --help (sanity)
+        run: |
+          chmod +x skills/arena/scripts/arena
+          skills/arena/scripts/arena --help
+          skills/arena/scripts/arena channel --help
+          skills/arena/scripts/arena block --help
+          skills/arena/scripts/arena user --help
+
+      - name: arena doctor (live)
+        if: ${{ env.ARENA_API_KEY != '' }}
+        env:
+          ARENA_API_KEY: ${{ secrets.ARENA_API_KEY }}
+        run: |
+          skills/arena/scripts/arena doctor
+
+      - name: arena user me (live)
+        if: ${{ env.ARENA_API_KEY != '' }}
+        env:
+          ARENA_API_KEY: ${{ secrets.ARENA_API_KEY }}
+        run: |
+          skills/arena/scripts/arena user me --pretty
+
+      - name: arena channel info (live, public channel)
+        if: ${{ env.ARENA_API_KEY != '' }}
+        env:
+          ARENA_API_KEY: ${{ secrets.ARENA_API_KEY }}
+        run: |
+          # Use a known-public Are.na channel for the smoke check.
+          skills/arena/scripts/arena channel info schizocollage --pretty
