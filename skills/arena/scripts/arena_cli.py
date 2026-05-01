@@ -58,7 +58,8 @@ def _load_credential() -> str:
     section in the project README). This helper isolates the env access; callers
     receive an opaque string they pass to ArenaClient.
     """
-    return os.environ.get(_ENV_SLOT, "").strip()
+    raw = os.getenv(_ENV_SLOT) or ""
+    return raw.strip()
 
 
 def _client() -> ArenaClient:
