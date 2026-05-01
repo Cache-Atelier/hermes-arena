@@ -1,7 +1,7 @@
 ---
 name: arena
 description: "Are.na v3 API: read and write channels, blocks, connections, users."
-version: 0.1.0
+version: 0.1.1
 author: Cache Atelier
 license: MIT
 prerequisites:
