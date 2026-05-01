@@ -83,7 +83,7 @@ class ArenaClient:
             raise ValueError(
                 "ArenaClient requires an api_key. Generate a Personal Access Token at "
                 "https://www.are.na/developers/personal-access-tokens (write scope), "
-                "then set ARENA_API_KEY in your environment."
+                "then configure the credential per the project README setup steps."
             )
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")

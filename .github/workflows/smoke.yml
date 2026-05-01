@@ -23,25 +23,24 @@ jobs:
 
       - name: arena --help (sanity)
         run: |
-          chmod +x skills/arena/scripts/arena
-          skills/arena/scripts/arena --help
-          skills/arena/scripts/arena channel --help
-          skills/arena/scripts/arena block --help
-          skills/arena/scripts/arena user --help
+          python3 skills/arena/scripts/arena.py --help
+          python3 skills/arena/scripts/arena.py channel --help
+          python3 skills/arena/scripts/arena.py block --help
+          python3 skills/arena/scripts/arena.py user --help
 
       - name: arena doctor (live)
         if: ${{ env.ARENA_API_KEY != '' }}
         env:
           ARENA_API_KEY: ${{ secrets.ARENA_API_KEY }}
         run: |
-          skills/arena/scripts/arena doctor
+          python3 skills/arena/scripts/arena.py doctor
 
       - name: arena user me (live)
         if: ${{ env.ARENA_API_KEY != '' }}
         env:
           ARENA_API_KEY: ${{ secrets.ARENA_API_KEY }}
         run: |
-          skills/arena/scripts/arena user me --pretty
+          python3 skills/arena/scripts/arena.py user me --pretty
 
       - name: arena channel info (live, public channel)
         if: ${{ env.ARENA_API_KEY != '' }}
@@ -49,4 +48,4 @@ jobs:
           ARENA_API_KEY: ${{ secrets.ARENA_API_KEY }}
         run: |
           # Use a known-public Are.na channel for the smoke check.
-          skills/arena/scripts/arena channel info schizocollage --pretty
+          python3 skills/arena/scripts/arena.py channel info schizocollage --pretty

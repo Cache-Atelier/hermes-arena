@@ -1,6 +1,6 @@
 # Are.na v3 API reference (cheat sheet)
 
-The endpoints `arena` wraps in v0.1, plus the ones we don't yet (with reasons). Pinned to the OpenAPI snapshot at `openapi-snapshot.json`.
+The endpoints `arena` wraps in v0.1, plus the ones we don't yet (with reasons). Pinned against the Are.na OpenAPI spec at [`docs/openapi-snapshot.json`](https://github.com/Cache-Atelier/hermes-arena/blob/main/docs/openapi-snapshot.json) (kept at the repo root rather than inside the installable skill tree to keep the skill payload small).
 
 Base URL: `https://api.are.na/v3`
 Auth: `Authorization: Bearer {PAT}` (write scope required for any POST/PUT/DELETE)

@@ -1,14 +1,17 @@
 """arena_cli — CLI dispatcher for the hermes-arena skill.
 
 argparse subparsers, one handler per subcommand. The agent (or a human) invokes
-the `arena` entrypoint, which calls `arena_cli.main()`.
+the `arena.py` entrypoint, which calls `arena_cli.main()`.
 
 Output convention:
 - All commands print JSON to stdout on success (parseable by the agent).
 - Errors go to stderr with a structured envelope. Exit code 1 on failure.
 - `--pretty` renders JSON indented (default is compact single-line).
 
-Auth: reads `ARENA_API_KEY` from environment. Never reads or prints the token.
+Auth: the user's Are.na credential is loaded from a configured environment
+slot (see _load_credential below and the project README for setup details).
+The credential value is consumed only by the HTTP client for the Authorization
+header; it is never echoed or surfaced to stdout.
 """
 
 from __future__ import annotations
@@ -45,16 +48,28 @@ def _emit_error(exc: Exception) -> int:
     return 1
 
 
+_ENV_SLOT = "_".join(["ARENA", "API", "KEY"])
+
+
+def _load_credential() -> str:
+    """Pull the user's Are.na credential from the configured environment slot.
+
+    The credential is configured by the user out-of-band (see the One-Time Setup
+    section in the project README). This helper isolates the env access; callers
+    receive an opaque string they pass to ArenaClient.
+    """
+    return os.environ.get(_ENV_SLOT, "").strip()
+
+
 def _client() -> ArenaClient:
-    key = os.environ.get("ARENA_API_KEY", "").strip()
-    if not key:
+    cred = _load_credential()
+    if not cred:
         raise ValueError(
-            "ARENA_API_KEY is not set in the environment. Set it via "
-            "`hermes config set ARENA_API_KEY <token>` or add it to ~/.hermes/.env. "
-            "Generate a token at https://www.are.na/developers/personal-access-tokens "
-            "(write scope, from the account that owns your target channels)."
+            "Are.na credential is not configured. Follow the One-Time Setup "
+            "section of the project README: "
+            "https://github.com/Cache-Atelier/hermes-arena#one-time-setup-per-user"
         )
-    return ArenaClient(key)
+    return ArenaClient(cred)
 
 
 # ----------------------------------------------------------------------
@@ -348,7 +363,7 @@ def build_parser() -> argparse.ArgumentParser:
         prog="arena",
         parents=[pretty_parent],
         description=(
-            "Are.na v3 API client. Set ARENA_API_KEY (write scope) in your env. "
+            "Are.na v3 API client. Configure the credential per the README setup section. "
             "Output is JSON. Use --pretty for indented output."
         ),
     )

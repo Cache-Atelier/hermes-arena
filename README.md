@@ -19,15 +19,15 @@ The skill needs Python 3 and `requests` (one dependency).
 The skill installs to `~/.hermes/skills/social-media/arena/`. Hermes' install path does not preserve the executable bit on scripts, so always invoke via `python3`:
 
 ```
-python3 ~/.hermes/skills/social-media/arena/scripts/arena doctor
-python3 ~/.hermes/skills/social-media/arena/scripts/arena channel info <slug>
+python3 ~/.hermes/skills/social-media/arena/scripts/arena.py doctor
+python3 ~/.hermes/skills/social-media/arena/scripts/arena.py channel info <slug>
 # ...etc
 ```
 
 For convenience, alias it in your shell (`~/.bashrc` or `~/.zshrc`):
 
 ```
-alias arena='python3 ~/.hermes/skills/social-media/arena/scripts/arena'
+alias arena='python3 ~/.hermes/skills/social-media/arena/scripts/arena.py'
 ```
 
 After that, the snippets below work as written.
