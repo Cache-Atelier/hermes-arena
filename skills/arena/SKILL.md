@@ -10,7 +10,7 @@ metadata:
   hermes:
     tags: [arena, are.na, social-media, curation, archive, channels, blocks]
     category: social-media
-    homepage: https://github.com/cacheatelier/hermes-arena
+    homepage: https://github.com/onchaindom/hermes-arena
 ---
 
 # arena — Are.na via v3 API
@@ -46,18 +46,20 @@ Critical rules when operating inside an agent or LLM session:
 ## Installation
 
 ```
-hermes skills install cacheatelier/hermes-arena/arena --category social-media
+hermes skills install onchaindom/hermes-arena/arena --category social-media
 ```
 
 Python 3 is the only host requirement. The skill installs `requests` automatically when invoked.
 
 ## One-Time User Setup
 
-The user does this **outside the agent session**:
+Every user who installs this skill provides **their own** Are.na Personal Access Token — there is no shared key. The token authenticates as whoever issued it; that user's permissions are the agent's permissions.
 
-1. Sign in to [are.na](https://www.are.na) using the account that owns (or has write permission on) the channels they want to manage.
+The user does the setup **outside the agent session** (PATs never go through chat):
+
+1. Sign in to [are.na](https://www.are.na) **as the account that should own the work**. If publishing as a personal user, sign in personally. If publishing as a press/studio/team, sign in as that account. Whichever account is signed in here is the identity the skill writes under for the lifetime of the token.
 2. Visit [are.na/developers/personal-access-tokens](https://www.are.na/developers/personal-access-tokens).
-3. Generate a new Personal Access Token. **Grant `write` scope.** Read-only tokens fail silently on POST with 401 — this is the most common gotcha.
+3. Generate a new Personal Access Token. **Grant `write` scope.** Read-only tokens fail silently on POST with HTTP 401 — and the failure is indistinguishable from a missing token, so this is the most common gotcha.
 4. The token is shown once. Copy it.
 5. Set it in the Hermes environment:
    ```
@@ -68,9 +70,9 @@ The user does this **outside the agent session**:
    ```
    arena doctor
    ```
-   Expected: `{"ok": true, "checks": {"auth": {"ok": true, "user_slug": "...", ...}}}`
+   Expected: `{"ok": true, "checks": {"auth": {"ok": true, "user_slug": "...", ...}}}`. The `user_slug` confirms which Are.na identity the token is acting as.
 
-The PAT must be issued by the **same Are.na account that owns the target channel**. Generating a PAT under a personal account and then trying to write to a press/team account's channel returns 401. Confirm with `arena doctor --channel <slug>` to verify write access on a specific channel before any batch operation.
+**Channel ownership matters.** The PAT inherits the issuing account's permissions. To write to `are.na/your-account/your-channel`, the PAT must be issued by `your-account` (or by an account added as a collaborator with write rights). Generating a PAT under a personal account and then trying to write to a separate press/team account's channel returns 401 even with `write` scope. Confirm with `arena doctor --channel <slug>` to verify write access on a specific channel before any batch operation.
 
 ---
 

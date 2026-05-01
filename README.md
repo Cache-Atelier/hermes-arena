@@ -7,25 +7,29 @@ Built by [Cache Atelier](https://cacheatelier.work) for [Clio Press](https://www
 ## Install
 
 ```
-hermes skills install cacheatelier/hermes-arena/arena --category social-media
+hermes skills install onchaindom/hermes-arena/arena --category social-media
 ```
 
 The skill needs Python 3 and `requests` (one dependency). Hermes' install flow handles them.
 
-## One-time setup
+## One-time setup (per user)
 
-1. Create or sign in to your Are.na account at [are.na](https://www.are.na).
-2. Generate a Personal Access Token at [are.na/developers/personal-access-tokens](https://www.are.na/developers/personal-access-tokens) — **make sure to grant `write` scope, not just `read`**. (Read-only tokens fail silently on POST with 401.)
-3. The token must be issued by the account that owns or has write permission on the channels you want to publish to. If you want to publish to `are.na/your-account/your-channel`, generate the PAT while logged in as `your-account`.
-4. Add the token to Hermes' env:
+The skill uses **your** Are.na Personal Access Token. There is no shared API key — every user who installs `hermes-arena` provides their own. The token authenticates as the Are.na user who issued it; that user's permissions are the agent's permissions.
+
+1. **Sign in to Are.na as the user/account that should own your work.** If you operate under a personal account, sign in there. If you have a separate publication or team account (e.g. a press, a studio, a research collective), sign in as that account. Whichever account you sign in as is the identity the skill will write under.
+2. **Generate a Personal Access Token** at [are.na/developers/personal-access-tokens](https://www.are.na/developers/personal-access-tokens). Grant **`write` scope** — read-only tokens silently fail on POST with HTTP 401, and the failure looks identical to a missing token.
+3. **The PAT inherits your account's permissions.** You can read any public channel and write to any channel your account owns or is a collaborator on. To publish to `are.na/your-account/your-channel`, the PAT must be issued by `your-account` (or by an account that has been added as a collaborator with write rights).
+4. **Set the token in Hermes' environment:**
    ```
    hermes config set ARENA_API_KEY <your-pat>
    ```
-   (Or add `ARENA_API_KEY=<pat>` to `~/.hermes/.env` directly.)
-5. Verify everything is wired:
+   (Or add `ARENA_API_KEY=<pat>` to `~/.hermes/.env` directly. The token never enters chat or agent context — `arena` reads it from env at runtime.)
+5. **Verify:**
    ```
-   arena doctor
+   arena doctor                              # confirms token is present and valid
+   arena doctor --channel <your-channel>     # also confirms write access on that channel
    ```
+   `arena doctor` reports the user slug it sees (so you can confirm you're acting as the right account) and the `can.add_to/update/destroy/manage_collaborators` permissions on the optional channel.
 
 ## What the skill does
 
